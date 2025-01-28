@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -10,16 +10,16 @@
     </parent>
 
     <groupId>ru.vavtech</groupId>
-    <artifactId>hw06-orm</artifactId>
+    <artifactId>hw07-spring-data</artifactId>
     <version>1.0</version>
-    <name>hw06-orm</name>
+    <name>hw07-spring-data</name>
 
     <properties>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <h2.version>2.2.220</h2.version>
-        <spring.shell.version>3.4.0</spring.shell.version>
+        <spring.shell.version>3.2.1</spring.shell.version>
         <snakeyaml.version>2.0</snakeyaml.version>
         <checkstyle-plugin.version>3.2.2</checkstyle-plugin.version>
         <checkstyle.version>10.11.0</checkstyle.version>

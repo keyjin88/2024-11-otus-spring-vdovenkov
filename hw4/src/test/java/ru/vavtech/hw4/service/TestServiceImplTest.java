@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.vavtech.hw4.dao.QuestionDao;
 import ru.vavtech.hw4.domain.Answer;
 import ru.vavtech.hw4.domain.Question;
@@ -23,9 +24,9 @@ import static org.mockito.Mockito.when;
 class TestServiceImplTest {
 
 
-    @MockBean
+    @MockitoBean
     private IOService ioService;
-    @MockBean
+    @MockitoBean
     private QuestionDao questionDao;
     @Autowired
     private TestServiceImpl testService;
