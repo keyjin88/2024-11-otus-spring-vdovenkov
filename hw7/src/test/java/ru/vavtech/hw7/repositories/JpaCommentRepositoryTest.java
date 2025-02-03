@@ -6,8 +6,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import ru.vavtech.hw7.models.Book;
 import ru.vavtech.hw7.models.Comment;
-import ru.vavtech.hw7.repositories.BookRepository;
-import ru.vavtech.hw7.repositories.CommentRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

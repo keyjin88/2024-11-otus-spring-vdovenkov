@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import ru.vavtech.hw7.models.Author;
-import ru.vavtech.hw7.repositories.AuthorRepository;
 
 import java.util.stream.IntStream;
 

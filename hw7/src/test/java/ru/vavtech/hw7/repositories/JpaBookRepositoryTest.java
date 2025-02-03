@@ -9,8 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import ru.vavtech.hw7.models.Author;
 import ru.vavtech.hw7.models.Book;
 import ru.vavtech.hw7.models.Genre;
-import ru.vavtech.hw7.repositories.BookRepository;
-import ru.vavtech.hw7.repositories.CommentRepository;
 
 import java.util.Comparator;
 import java.util.List;
