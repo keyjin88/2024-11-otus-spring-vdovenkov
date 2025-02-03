@@ -1,4 +1,24 @@
 spring:
-  liquibase:
-    change-log: classpath:db/changelog/changelog.xml
-    contexts: test
+  data:
+    mongodb:
+      database: test
+  shell:
+    interactive:
+      enabled: false
+  autoconfigure:
+    exclude: org.springframework.shell.boot.StandardCommandsAutoConfiguration
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.vavtech.hw8.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local

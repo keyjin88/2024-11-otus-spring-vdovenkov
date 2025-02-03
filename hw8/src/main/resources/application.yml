@@ -7,7 +7,7 @@ spring:
 mongock:
   runner-type: "InitializingBean"
   change-logs-scan-package:
-    - ru.vavtech.mongock.changelog
+    - ru.vavtech.hw8.mongock.changelog
   mongo-db:
     write-concern:
       journal: false
