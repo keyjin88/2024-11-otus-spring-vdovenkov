@@ -22,13 +22,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+
       - name: Wait for MongoDB to be ready
         run: |
-          until nc -z localhost 27017; do
-            echo "Waiting for MongoDB..."
+          for i in {1..30}; do
+            if nc -z localhost 27017; then
+              echo "MongoDB is up and running!"
+              exit 0
+            fi
+            echo "Waiting for MongoDB to start..."
             sleep 5
           done
+          echo "MongoDB did not start in time"
+          exit 1
 
       - name: Build application
         run: |
-          mvn verify --no-transfer-progress
+          mvn verify -Dspring.data.mongodb.uri=mongodb://localhost:27017/testdb --no-transfer-progress
