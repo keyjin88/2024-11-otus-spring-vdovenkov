@@ -6,6 +6,11 @@ on:
 jobs:
   build-app:
     runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
 
     steps:
       - name: Checkout repo
@@ -21,9 +26,3 @@ jobs:
       - name: Build application
         run: |
           mvn verify --no-transfer-progress
-          
-services:
-  mongo:
-    image: mongo:latest
-    ports:
-      - 27017:27017
