@@ -22,6 +22,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+      - name: Wait for MongoDB to be ready
+        run: |
+          until nc -z localhost 27017; do
+            echo "Waiting for MongoDB..."
+            sleep 5
+          done
 
       - name: Build application
         run: |

@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://mongo:27017/testdb
+      uri: mongodb://localhost:27017/testdb
   shell:
     interactive:
       enabled: false
