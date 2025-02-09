@@ -92,7 +92,7 @@ class JpaCommentRepositoryTest {
         var book = em.find(Book.class, 1);
         var comments = commentRepository.findByBookId(book.getId());
         assertThat(comments).isNotEmpty();
-
+        em.clear();
         bookRepository.deleteById(book.getId());
         em.flush();
 
