@@ -19,8 +19,4 @@ public class Author {
     private String id;
 
     private String fullName;
-
-//    public Author(String fullName) {
-//        this.fullName = fullName;
-//    }
 }

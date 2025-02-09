@@ -23,7 +23,6 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentConverter commentConverter;
 
-    @Transactional(readOnly = true)
     @Override
     public List<CommentDto> findByBookId(String bookId) {
         return commentRepository.findByBookId(bookId).stream()
@@ -31,7 +30,6 @@ public class CommentServiceImpl implements CommentService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public CommentDto updateComment(String commentId, String commentText) {
         var comment = commentRepository.findById(commentId)
@@ -41,7 +39,6 @@ public class CommentServiceImpl implements CommentService {
         return commentConverter.from(comment);
     }
 
-    @Transactional
     @Override
     public CommentDto addComment(String bookId, String commentText) {
         var book = bookRepository.findById(bookId)
@@ -52,7 +49,6 @@ public class CommentServiceImpl implements CommentService {
         return commentConverter.from(comment);
     }
 
-    @Transactional
     @Override
     public void deleteCommentById(String commentId) {
         commentRepository.deleteById(commentId);

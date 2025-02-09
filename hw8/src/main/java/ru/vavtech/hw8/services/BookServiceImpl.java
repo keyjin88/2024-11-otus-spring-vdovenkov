@@ -26,13 +26,11 @@ public class BookServiceImpl implements BookService {
     private final CommentRepository commentRepository;
 
     @Override
-    @Transactional(readOnly = true)
     public Optional<Book> findById(String id) {
         return bookRepository.findById(id);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
@@ -74,7 +72,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public void deleteById(String id) {
         commentRepository.deleteByBookId(id);
         bookRepository.deleteById(id);
