@@ -15,9 +15,11 @@
         body {
             padding: 20px;
         }
+
         .table {
             margin-top: 20px;
         }
+
         .book-header {
             margin-bottom: 30px;
             color: #0d6efd; /* Цвет заголовка */
@@ -48,13 +50,17 @@
             <td th:text="${book.author.fullName}">John Doe</td>
             <td th:text="${book.genre.name}">Sample</td>
             <td>
-                <!-- Кнопки действий -->
-                <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-sm btn-warning">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
-                <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-sm btn-danger">
-                    <i class="fas fa-trash"></i> Delete
-                </a>
+                <div style="display: flex; gap: 5px;">
+                    <a th:href="@{/edit/{id}(id=${book.id})}" class="btn btn-sm btn-warning">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form th:action="@{/delete/{id}(id=${book.id})}" method="post"
+                          onsubmit="return confirm('Are you sure you want to delete this book?');">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
             </td>
         </tr>
         </tbody>
@@ -66,4 +72,9 @@
 </div>
 
 </body>
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this book?");
+    }
+</script>
 </html>
