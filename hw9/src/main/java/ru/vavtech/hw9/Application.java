@@ -2,12 +2,11 @@ package ru.vavtech.hw9;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.shell.command.annotation.CommandScan;
 
 @SpringBootApplication
-@CommandScan("ru.vavtech.hw7.commands")
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        System.out.printf("Чтобы перейти на страницу сайта открывай: %n%s%n", "http://localhost:8080");
     }
 }
