@@ -12,8 +12,11 @@ import ru.vavtech.hw9.models.Book;
 public class BookDto {
 
     private long id;
+
     private String title;
+
     private AuthorDto author;
+
     private GenreDto genre;
 
     public static BookDto fromDomainObject(Book book) {

@@ -21,8 +21,11 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class BookController {
+
     private final BookService bookService;
+
     private final AuthorService authorService;
+
     private final GenreService genreService;
 
     @GetMapping("/")

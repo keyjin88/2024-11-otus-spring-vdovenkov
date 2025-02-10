@@ -11,6 +11,7 @@ import ru.vavtech.hw9.models.Author;
 public class AuthorDto {
     
     private Long id;
+
     private String fullName;
 
     public static AuthorDto fromDomainObject(Author author) {

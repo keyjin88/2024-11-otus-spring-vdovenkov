@@ -14,8 +14,10 @@ public class CreateBookRequest {
 
     @NotBlank(message = "Title is required")
     private String title;
+
     @NotNull(message = "Author is required")
     private Long authorId;
+
     @NotNull(message = "Genre is required")
     private Long genreId;
 }

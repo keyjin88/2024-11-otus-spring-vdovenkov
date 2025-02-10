@@ -11,6 +11,7 @@ import ru.vavtech.hw9.models.Genre;
 public class GenreDto {
 
     private Long id;
+
     private String name;
 
     public static GenreDto fromDomainObject(Genre genre) {
