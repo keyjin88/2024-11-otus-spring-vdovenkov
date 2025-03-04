@@ -17,6 +17,7 @@
         <lombok.version>1.18.30</lombok.version>
         <mockito.version>5.15.2</mockito.version>
         <spring.version>6.2.1</spring.version>
+        <spring-boot.version>3.4.3</spring-boot.version>
         <opencsv.version>5.8</opencsv.version>
         <junit.version>5.10.0</junit.version>
         <assertj.version>3.24.2</assertj.version>
