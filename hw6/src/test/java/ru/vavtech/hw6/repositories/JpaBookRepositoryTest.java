@@ -9,8 +9,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.vavtech.hw6.models.Author;
 import ru.vavtech.hw6.models.Book;
+import ru.vavtech.hw6.models.Comment;
 import ru.vavtech.hw6.models.Genre;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -54,18 +56,27 @@ class JpaBookRepositoryTest {
     @DisplayName("должен загружать список всех книг")
     @Test
     void shouldReturnCorrectBooksList() {
-        List<Book> actualBooks = bookRepository.findAll();
-        List<Book> expectedBooks = dbBooks;
+        var expectedBooks = getDbBooks(dbAuthors, dbGenres);
+        var actualBooks = bookRepository.findAll();
 
         assertThat(actualBooks)
-                .usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyInAnyOrderElementsOf(expectedBooks);
+                .hasSize(expectedBooks.size())
+                .allSatisfy(actualBook -> {
+                    assertThat(expectedBooks)
+                            .anySatisfy(expectedBook -> {
+                                assertThat(actualBook)
+                                        .usingRecursiveComparison()
+                                        .withComparatorForType(Comparator.comparingLong(Author::getId), Author.class)
+                                        .withComparatorForType(Comparator.comparingLong(Genre::getId), Genre.class)
+                                        .isEqualTo(expectedBook);
+                            });
+                });
     }
     
     @DisplayName("должен сохранять новую книгу")
     @Test
     void shouldSaveNewBook() {
-        var expectedBook = new Book(0, "BookTitle_10500", dbAuthors.get(0), dbGenres.get(0));
+        var expectedBook = new Book(0, "BookTitle_10500", dbAuthors.get(0), dbGenres.get(0), List.of());
         expectedBook = bookRepository.save(expectedBook);
 
         var actualBook = em.find(Book.class, expectedBook.getId());
@@ -78,7 +89,7 @@ class JpaBookRepositoryTest {
     @DisplayName("должен сохранять изменённую книгу")
     @Test
     void shouldSaveUpdatedBook() {
-        final var expectedBook = new Book(1L, "BookTitle_10500", dbAuthors.get(2), dbGenres.get(2));
+        final var expectedBook = new Book(1L, "BookTitle_10500", dbAuthors.get(2), dbGenres.get(2), List.of());
         var actualBook = em.find(Book.class, expectedBook.getId());
 
         Comparator<Author> authorComparator = Comparator.comparingLong(Author::getId);
@@ -127,7 +138,16 @@ class JpaBookRepositoryTest {
 
     private static List<Book> getDbBooks(List<Author> dbAuthors, List<Genre> dbGenres) {
         return IntStream.range(1, 4).boxed()
-                .map(id -> new Book(id, "Book_" + id, dbAuthors.get(id - 1), dbGenres.get(id - 1)))
+                .map(id -> {
+                    var book = new Book(id, "Book_" + id, dbAuthors.get(id - 1), dbGenres.get(id - 1), new ArrayList<>());
+                    if (id == 1) {
+                        book.getComments().add(new Comment(1, "Comment #1 to book 1", book));
+                        book.getComments().add(new Comment(2, "Comment #2 to book 1", book));
+                    } else if (id == 2) {
+                        book.getComments().add(new Comment(3, "Comment #1 to book 2", book));
+                    }
+                    return book;
+                })
                 .toList();
     }
 }
