@@ -7,6 +7,12 @@
     <artifactId>hw01-xml-config</artifactId>
     <version>1.0</version>
 
+    <parent>
+        <groupId>ru.otus</groupId>
+        <artifactId>2024-11-otus-spring-hw</artifactId>
+        <version>1.0</version>
+    </parent>
+
     <properties>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
@@ -16,7 +22,6 @@
         <junit.version>5.10.0</junit.version>
         <mockito.version>5.4.0</mockito.version>
         <assertj.version>3.24.2</assertj.version>
-        <lombok.version>1.18.28</lombok.version>
         <checkstyle-plugin.version>3.2.2</checkstyle-plugin.version>
         <checkstyle.version>10.11.0</checkstyle.version>
         <checkstyle.config.url>
@@ -42,8 +47,6 @@
             </exclusions>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -63,13 +66,6 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
             <version>${assertj.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-            <version>${lombok.version}</version>
         </dependency>
 
     </dependencies>
