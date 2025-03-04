@@ -4,18 +4,12 @@ import org.springframework.stereotype.Component;
 import ru.vavtech.hw9.models.Comment;
 import ru.vavtech.hw9.models.dto.CommentDto;
 
-
 @Component
-public class CommentConverter {
-
-    public String commentToString(CommentDto commentDto) {
-        return "Id: %d, text: %s".formatted(commentDto.getId(), commentDto.getComment());
-    }
-
-    public CommentDto from(Comment comment) {
+public class CommentMapper {
+    public CommentDto toDto(Comment comment) {
         return new CommentDto(
                 comment.getId(),
                 comment.getText(),
                 comment.getBook().getId());
     }
-}
+} 

@@ -1,19 +1,19 @@
 package ru.vavtech.hw9.services;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.vavtech.hw9.converters.BookMapper;
 import ru.vavtech.hw9.exceptions.EntityNotFoundException;
 import ru.vavtech.hw9.models.Author;
 import ru.vavtech.hw9.models.Book;
 import ru.vavtech.hw9.models.Genre;
+import ru.vavtech.hw9.models.dto.BookDto;
 import ru.vavtech.hw9.repositories.AuthorRepository;
 import ru.vavtech.hw9.repositories.BookRepository;
 import ru.vavtech.hw9.repositories.GenreRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -24,37 +24,43 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
+    private final BookMapper bookMapper;
+
     @Override
     @Transactional(readOnly = true)
-    public Optional<Book> findById(long id) {
-        return bookRepository.findById(id);
+    public BookDto findById(long id) {
+        return bookRepository.findById(id)
+                .map(bookMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Book with id %d not found".formatted(id)));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<BookDto> findAll() {
+        return bookRepository.findAll().stream()
+                .map(bookMapper::toDto)
+                .toList();
     }
 
     @Override
     @Transactional
-    public Book create(String title, long authorId, long genreId) {
+    public BookDto create(String title, long authorId, long genreId) {
         var book = new Book();
         book.setTitle(title);
         book.setAuthor(authorById(authorId));
         book.setGenre(genreById(genreId));
-        return bookRepository.save(book);
+        return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
     @Transactional
-    public Book update(long id, String title, long authorId, long genreId) {
+    public BookDto update(long id, String title, long authorId, long genreId) {
         var book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Book with id %d not found".formatted(id)));
         book.setTitle(title);
         book.setAuthor(authorById(authorId));
         book.setGenre(genreById(genreId));
-        return bookRepository.save(book);
+        return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override

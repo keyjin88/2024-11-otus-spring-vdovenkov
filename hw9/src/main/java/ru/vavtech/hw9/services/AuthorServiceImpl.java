@@ -3,7 +3,8 @@ package ru.vavtech.hw9.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vavtech.hw9.models.Author;
+import ru.vavtech.hw9.converters.AuthorMapper;
+import ru.vavtech.hw9.models.dto.AuthorDto;
 import ru.vavtech.hw9.repositories.AuthorRepository;
 
 import java.util.List;
@@ -11,11 +12,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class AuthorServiceImpl implements AuthorService {
+
     private final AuthorRepository authorRepository;
+    
+    private final AuthorMapper authorMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Author> findAll() {
-        return authorRepository.findAll();
+    public List<AuthorDto> findAll() {
+        return authorRepository.findAll().stream()
+                .map(authorMapper::toDto)
+                .toList();
     }
 }

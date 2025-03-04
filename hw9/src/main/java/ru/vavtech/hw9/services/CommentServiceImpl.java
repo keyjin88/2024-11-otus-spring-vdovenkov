@@ -3,53 +3,50 @@ package ru.vavtech.hw9.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vavtech.hw9.converters.CommentConverter;
-import ru.vavtech.hw9.exceptions.EntityNotFoundException;
+import ru.vavtech.hw9.converters.CommentMapper;
 import ru.vavtech.hw9.models.Comment;
 import ru.vavtech.hw9.models.dto.CommentDto;
 import ru.vavtech.hw9.repositories.BookRepository;
 import ru.vavtech.hw9.repositories.CommentRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    private final BookRepository bookRepository;
-
     private final CommentRepository commentRepository;
 
-    private final CommentConverter commentConverter;
+    private final BookRepository bookRepository;
+
+    private final CommentMapper commentMapper;
 
     @Transactional(readOnly = true)
     @Override
     public List<CommentDto> findByBookId(long bookId) {
         return commentRepository.findByBookId(bookId).stream()
-                .map(commentConverter::from)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    @Override
-    public CommentDto updateComment(long commentId, String commentText) {
-        var comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("Comment with id %d not found".formatted(commentId)));
-        comment.setText(commentText);
-        comment = commentRepository.save(comment);
-        return commentConverter.from(comment);
+                .map(commentMapper::toDto)
+                .toList();
     }
 
     @Transactional
     @Override
     public CommentDto addComment(long bookId, String commentText) {
         var book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new EntityNotFoundException("Book with id %d not found".formatted(bookId)));
-        Comment comment = new Comment(book);
+                .orElseThrow(() -> new IllegalArgumentException("Book with id %d not found".formatted(bookId)));
+        var comment = new Comment(0, commentText, book);
+        comment = commentRepository.save(comment);
+        return commentMapper.toDto(comment);
+    }
+
+    @Transactional
+    @Override
+    public CommentDto updateComment(long commentId, String commentText) {
+        var comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Comment with id %d not found".formatted(commentId)));
         comment.setText(commentText);
         comment = commentRepository.save(comment);
-        return commentConverter.from(comment);
+        return commentMapper.toDto(comment);
     }
 
     @Transactional

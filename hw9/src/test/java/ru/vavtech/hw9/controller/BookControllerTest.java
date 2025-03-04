@@ -6,23 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.vavtech.hw9.models.Author;
-import ru.vavtech.hw9.models.Book;
-import ru.vavtech.hw9.models.Genre;
+import ru.vavtech.hw9.models.dto.AuthorDto;
+import ru.vavtech.hw9.models.dto.BookDto;
+import ru.vavtech.hw9.models.dto.GenreDto;
 import ru.vavtech.hw9.services.AuthorService;
 import ru.vavtech.hw9.services.BookService;
 import ru.vavtech.hw9.services.GenreService;
 
 import java.util.Collections;
-import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 
 @WebMvcTest(BookController.class)
 class BookControllerTest {
@@ -40,7 +41,11 @@ class BookControllerTest {
 
     @Test
     public void testListPage() throws Exception {
-        Mockito.when(bookService.findAll()).thenReturn(Collections.emptyList());
+        var bookDto = new BookDto(1L, "Sample Book",
+                new AuthorDto(1L, "Author"),
+                new GenreDto(1L, "Genre"));
+
+        Mockito.when(bookService.findAll()).thenReturn(Collections.singletonList(bookDto));
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
@@ -73,14 +78,13 @@ class BookControllerTest {
 
     @Test
     public void testShowEditBookForm() throws Exception {
-        Book book = new Book();
-        book.setId(1L);
-        book.setTitle("Sample Book");
-        book.setAuthor(new Author(100L, "100 Author"));
-        book.setGenre(new Genre(100L, "100 Genre"));
-        Mockito.when(bookService.findById(1L)).thenReturn(Optional.of(book));
-        Mockito.when(authorService.findAll()).thenReturn(Collections.singletonList(new Author(1L, "Author")));
-        Mockito.when(genreService.findAll()).thenReturn(Collections.singletonList(new Genre(1L, "Genre")));
+        var bookDto = new BookDto(1L, "Sample Book",
+                new AuthorDto(100L, "100 Author"),
+                new GenreDto(100L, "100 Genre"));
+        
+        Mockito.when(bookService.findById(1L)).thenReturn(bookDto);
+        Mockito.when(authorService.findAll()).thenReturn(Collections.singletonList(new AuthorDto(1L, "Author")));
+        Mockito.when(genreService.findAll()).thenReturn(Collections.singletonList(new GenreDto(1L, "Genre")));
 
         mockMvc.perform(get("/edit/1"))
                 .andExpect(status().isOk())
@@ -92,10 +96,17 @@ class BookControllerTest {
 
     @Test
     public void testUpdateBook() throws Exception {
+        var bookDto = new BookDto(1L, "Updated Book",
+                new AuthorDto(1L, "Author"),
+                new GenreDto(1L, "Genre"));
+        
+        Mockito.when(bookService.update(eq(1L), any(), anyLong(), anyLong())).thenReturn(bookDto);
+
         mockMvc.perform(post("/update/1")
+                        .param("id", "1")
                         .param("title", "Updated Book")
-                        .param("author.id", "1")
-                        .param("genre.id", "1"))
+                        .param("authorId", "1")
+                        .param("genreId", "1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
     }
