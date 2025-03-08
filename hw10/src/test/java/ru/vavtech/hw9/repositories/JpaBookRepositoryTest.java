@@ -6,9 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import ru.vavtech.hw9.models.Author;
-import ru.vavtech.hw9.models.Book;
-import ru.vavtech.hw9.models.Genre;
+import ru.vavtech.hw10.models.Author;
+import ru.vavtech.hw10.models.Book;
+import ru.vavtech.hw10.models.Genre;
+import ru.vavtech.hw10.repositories.BookRepository;
+import ru.vavtech.hw10.repositories.CommentRepository;
 
 import java.util.Comparator;
 import java.util.List;

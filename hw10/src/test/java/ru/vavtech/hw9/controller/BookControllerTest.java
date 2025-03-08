@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.vavtech.hw9.models.dto.AuthorDto;
-import ru.vavtech.hw9.models.dto.BookDto;
-import ru.vavtech.hw9.models.dto.GenreDto;
-import ru.vavtech.hw9.models.dto.UpdateBookDto;
-import ru.vavtech.hw9.services.AuthorService;
-import ru.vavtech.hw9.services.BookService;
-import ru.vavtech.hw9.services.GenreService;
+import ru.vavtech.hw10.controller.BookController;
+import ru.vavtech.hw10.models.dto.AuthorDto;
+import ru.vavtech.hw10.models.dto.BookDto;
+import ru.vavtech.hw10.models.dto.GenreDto;
+import ru.vavtech.hw10.models.dto.UpdateBookDto;
+import ru.vavtech.hw10.services.AuthorService;
+import ru.vavtech.hw10.services.BookService;
+import ru.vavtech.hw10.services.GenreService;
 
 import java.util.List;
 

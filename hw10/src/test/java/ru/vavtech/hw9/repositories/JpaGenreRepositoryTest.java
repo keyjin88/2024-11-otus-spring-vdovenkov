@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import ru.vavtech.hw9.models.Genre;
+import ru.vavtech.hw10.models.Genre;
+import ru.vavtech.hw10.repositories.GenreRepository;
 
 import java.util.stream.IntStream;
 

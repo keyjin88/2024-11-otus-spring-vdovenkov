@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.vavtech.hw9.exceptions.NotFoundException;
-import ru.vavtech.hw9.services.BookService;
+import ru.vavtech.hw10.controller.BookController;
+import ru.vavtech.hw10.exceptions.NotFoundException;
+import ru.vavtech.hw10.services.AuthorService;
+import ru.vavtech.hw10.services.BookService;
+import ru.vavtech.hw10.services.GenreService;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,10 +28,10 @@ class ExceptionHandlerAdviceTest {
     private BookService bookService;
 
     @MockBean
-    private ru.vavtech.hw9.services.AuthorService authorService;
+    private AuthorService authorService;
 
     @MockBean
-    private ru.vavtech.hw9.services.GenreService genreService;
+    private GenreService genreService;
 
     @DisplayName("Should return 404 page when entity not found")
     @Test
