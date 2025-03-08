@@ -9,8 +9,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.vavtech.hw9.models.dto.AuthorDto;
 import ru.vavtech.hw9.models.dto.BookDto;
-import ru.vavtech.hw9.models.dto.BookEditDto;
 import ru.vavtech.hw9.models.dto.GenreDto;
+import ru.vavtech.hw9.models.dto.UpdateBookDto;
 import ru.vavtech.hw9.services.AuthorService;
 import ru.vavtech.hw9.services.BookService;
 import ru.vavtech.hw9.services.GenreService;
@@ -53,8 +53,8 @@ class BookControllerTest {
         return new BookDto(1L, "Test Book", getAuthorDto(), getGenreDto());
     }
 
-    private static BookEditDto getBookEditDto() {
-        return new BookEditDto(1L, "Test Book", 1L, 1L);
+    private static UpdateBookDto getUpdateBookDto() {
+        return new UpdateBookDto(1L, "Test Book", 1L, 1L);
     }
 
     @DisplayName("Should correctly return list of all books")
@@ -80,7 +80,7 @@ class BookControllerTest {
         mvc.perform(get("/add"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("add-book"))
-                .andExpect(model().attribute("book", new BookEditDto()))
+                .andExpect(model().attribute("book", new UpdateBookDto()))
                 .andExpect(model().attribute("authors", authors))
                 .andExpect(model().attribute("genres", genres));
     }
@@ -98,11 +98,29 @@ class BookControllerTest {
         verify(bookService).create("New Book", 1L, 1L);
     }
 
+    @DisplayName("Should show validation errors when adding book with invalid data")
+    @Test
+    void shouldShowValidationErrorsWhenAddingInvalidBook() throws Exception {
+        var authors = List.of(getAuthorDto());
+        var genres = List.of(getGenreDto());
+        given(authorService.findAll()).willReturn(authors);
+        given(genreService.findAll()).willReturn(genres);
+
+        mvc.perform(post("/add")
+                        .param("title", "")
+                        .param("authorId", "")
+                        .param("genreId", ""))
+                .andExpect(status().isOk())
+                .andExpect(view().name("add-book"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeHasFieldErrors("book", "title", "authorId", "genreId"));
+    }
+
     @DisplayName("Should correctly return edit book page")
     @Test
     void shouldReturnCorrectEditBookPage() throws Exception {
         var book = getBookDto();
-        var bookEditDto = getBookEditDto();
+        var updateBookDto = getUpdateBookDto();
         var authors = List.of(getAuthorDto());
         var genres = List.of(getGenreDto());
         given(bookService.findById(1L)).willReturn(book);
@@ -112,7 +130,7 @@ class BookControllerTest {
         mvc.perform(get("/edit/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("edit-book"))
-                .andExpect(model().attribute("book", bookEditDto))
+                .andExpect(model().attribute("book", updateBookDto))
                 .andExpect(model().attribute("authors", authors))
                 .andExpect(model().attribute("genres", genres));
     }
@@ -138,5 +156,23 @@ class BookControllerTest {
                 .andExpect(redirectedUrl("/"));
 
         verify(bookService).update(1L, "Updated Book", 1L, 1L);
+    }
+
+    @DisplayName("Should show validation errors when updating book with invalid data")
+    @Test
+    void shouldShowValidationErrorsWhenUpdatingInvalidBook() throws Exception {
+        var authors = List.of(getAuthorDto());
+        var genres = List.of(getGenreDto());
+        given(authorService.findAll()).willReturn(authors);
+        given(genreService.findAll()).willReturn(genres);
+
+        mvc.perform(post("/update/1")
+                        .param("title", "")
+                        .param("authorId", "")
+                        .param("genreId", ""))
+                .andExpect(status().isOk())
+                .andExpect(view().name("edit-book"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeHasFieldErrors("book", "title", "authorId", "genreId"));
     }
 } 
