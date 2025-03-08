@@ -1,4 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import AddBookForm from './AddBookForm';
+import { 
+    Table, 
+    TableBody, 
+    TableCell, 
+    TableContainer, 
+    TableHead, 
+    TableRow, 
+    Paper,
+    Typography,
+    Container,
+    Box
+} from '@mui/material';
 
 const BookList = () => {
     const [books, setBooks] = useState([]);
@@ -24,31 +37,42 @@ const BookList = () => {
         }
     };
 
-    if (loading) return <div>Загрузка...</div>;
-    if (error) return <div>Ошибка: {error}</div>;
+    const handleBookAdded = (newBook) => {
+        setBooks(prevBooks => [...prevBooks, newBook]);
+    };
+
+    if (loading) return <Typography>Загрузка...</Typography>;
+    if (error) return <Typography color="error">Ошибка: {error}</Typography>;
 
     return (
-        <div className="book-list">
-            <h2>Список книг</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Название</th>
-                        <th>Автор</th>
-                        <th>Жанр</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {books.map(book => (
-                        <tr key={book.id}>
-                            <td>{book.title}</td>
-                            <td>{book.author.fullName}</td>
-                            <td>{book.genre.name}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+        <Container maxWidth="md" sx={{ mt: 4 }}>
+            <Typography variant="h4" component="h2" sx={{ my: 4, textAlign: 'center', color: 'primary.main' }}>
+                Список книг
+            </Typography>
+            <TableContainer component={Paper} elevation={3}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Название</TableCell>
+                            <TableCell>Автор</TableCell>
+                            <TableCell>Жанр</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {books.map(book => (
+                            <TableRow key={book.id} hover>
+                                <TableCell>{book.title}</TableCell>
+                                <TableCell>{book.author.fullName}</TableCell>
+                                <TableCell>{book.genre.name}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <Box sx={{ mt: 4 }}>
+                <AddBookForm onBookAdded={handleBookAdded} />
+            </Box>
+        </Container>
     );
 };
 

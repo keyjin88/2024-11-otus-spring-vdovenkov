@@ -1,18 +1,33 @@
 import React from 'react';
-import './App.css';
+import { ThemeProvider, createTheme, CssBaseline, AppBar, Toolbar, Typography, Container } from '@mui/material';
 import BookList from './components/BookList';
-import './components/BookList.css';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    background: {
+      default: '#f5f5f5',
+    },
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Библиотека</h1>
-      </header>
-      <main>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AppBar position="static" sx={{ mb: 4 }}>
+        <Toolbar>
+          <Typography variant="h6" component="h1">
+            Библиотека
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Container>
         <BookList />
-      </main>
-    </div>
+      </Container>
+    </ThemeProvider>
   );
 }
 

@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import './AddBookForm.css';
+import {
+    TextField,
+    MenuItem,
+    Button,
+    Paper,
+    Typography,
+    Box,
+    FormControl,
+    InputLabel,
+    Select
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 const AddBookForm = ({ onBookAdded }) => {
     const [authors, setAuthors] = useState([]);
@@ -63,61 +74,63 @@ const AddBookForm = ({ onBookAdded }) => {
         }
     };
 
-    if (loading) return <div>Загрузка...</div>;
-    if (error) return <div>Ошибка: {error}</div>;
+    if (loading) return <Typography>Загрузка...</Typography>;
+    if (error) return <Typography color="error">Ошибка: {error}</Typography>;
 
     return (
-        <div className="add-book-form">
-            <h3>Добавить новую книгу</h3>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="title">Название:</label>
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="authorId">Автор:</label>
-                    <select
-                        id="authorId"
+        <Paper elevation={3} sx={{ p: 3 }}>
+            <Typography variant="h5" component="h3" sx={{ mb: 3, textAlign: 'center', color: 'primary.main' }}>
+                Добавить новую книгу
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <TextField
+                    label="Название"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                />
+                <FormControl fullWidth required>
+                    <InputLabel>Автор</InputLabel>
+                    <Select
                         name="authorId"
                         value={formData.authorId}
                         onChange={handleChange}
-                        required
+                        label="Автор"
                     >
-                        <option value="">Выберите автора</option>
                         {authors.map(author => (
-                            <option key={author.id} value={author.id}>
+                            <MenuItem key={author.id} value={author.id}>
                                 {author.fullName}
-                            </option>
+                            </MenuItem>
                         ))}
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="genreId">Жанр:</label>
-                    <select
-                        id="genreId"
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth required>
+                    <InputLabel>Жанр</InputLabel>
+                    <Select
                         name="genreId"
                         value={formData.genreId}
                         onChange={handleChange}
-                        required
+                        label="Жанр"
                     >
-                        <option value="">Выберите жанр</option>
                         {genres.map(genre => (
-                            <option key={genre.id} value={genre.id}>
+                            <MenuItem key={genre.id} value={genre.id}>
                                 {genre.name}
-                            </option>
+                            </MenuItem>
                         ))}
-                    </select>
-                </div>
-                <button type="submit">Добавить книгу</button>
-            </form>
-        </div>
+                    </Select>
+                </FormControl>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    sx={{ mt: 2 }}
+                >
+                    Добавить книгу
+                </Button>
+            </Box>
+        </Paper>
     );
 };
 
