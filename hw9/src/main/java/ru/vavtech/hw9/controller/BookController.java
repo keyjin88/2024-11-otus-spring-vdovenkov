@@ -19,7 +19,9 @@ import ru.vavtech.hw9.services.GenreService;
 public class BookController {
 
     private final BookService bookService;
+
     private final AuthorService authorService;
+
     private final GenreService genreService;
 
     @GetMapping("/")
