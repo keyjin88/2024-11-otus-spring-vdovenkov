@@ -9,8 +9,10 @@ import {
     FormControl,
     InputLabel,
     Select,
-    MenuItem
+    MenuItem,
+    Alert
 } from '@mui/material';
+import * as api from '../services/api';
 
 const EditBookForm = ({ book, authors, genres, open, onClose, onSave }) => {
     const [formData, setFormData] = useState({
@@ -19,6 +21,7 @@ const EditBookForm = ({ book, authors, genres, open, onClose, onSave }) => {
         authorId: book?.author?.id || '',
         genreId: book?.genre?.id || ''
     });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,31 +34,29 @@ const EditBookForm = ({ book, authors, genres, open, onClose, onSave }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`/api/books/${book.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (!response.ok) {
-                throw new Error('Ошибка при обновлении книги');
-            }
-
-            const updatedBook = await response.json();
+            const updatedBook = await api.updateBook(book.id, formData);
             onSave(updatedBook);
             onClose();
         } catch (err) {
-            console.error('Ошибка при обновлении книги:', err);
+            setError(err.message);
         }
     };
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog 
+            open={open} 
+            onClose={onClose}
+            maxWidth="md"
+            fullWidth
+        >
             <DialogTitle>Редактировать книгу</DialogTitle>
             <DialogContent>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '10px' }}>
+                {error && (
+                    <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError('')}>
+                        {error}
+                    </Alert>
+                )}
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '10px', minWidth: '500px' }}>
                     <TextField
                         label="Название"
                         name="title"

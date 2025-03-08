@@ -3,7 +3,11 @@ const handleResponse = async (response) => {
         const error = await response.text();
         throw new Error(error || 'Произошла ошибка при выполнении запроса');
     }
-    return response.json();
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+        return response.json();
+    }
+    return null;
 };
 
 export const fetchBooks = async () => {
