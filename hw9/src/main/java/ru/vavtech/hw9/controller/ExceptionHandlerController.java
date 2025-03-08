@@ -2,8 +2,6 @@ package ru.vavtech.hw9.controller;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,6 +48,7 @@ public class ExceptionHandlerController {
     @Data
     private static class ValidationError {
         private final String field;
+
         private final String message;
     }
 } 
