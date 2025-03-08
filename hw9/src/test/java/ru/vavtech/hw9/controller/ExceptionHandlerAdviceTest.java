@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.vavtech.hw9.exceptions.EntityNotFoundException;
+import ru.vavtech.hw9.exceptions.NotFoundException;
 import ru.vavtech.hw9.services.BookService;
 
 import static org.mockito.BDDMockito.given;
@@ -34,7 +34,7 @@ class ExceptionHandlerAdviceTest {
     @Test
     void shouldReturn404PageWhenEntityNotFound() throws Exception {
         given(bookService.findById(1L))
-                .willThrow(new EntityNotFoundException("Book with id 1 not found"));
+                .willThrow(new NotFoundException("Book with id 1 not found"));
 
         mvc.perform(get("/edit/1"))
                 .andExpect(status().isNotFound())
