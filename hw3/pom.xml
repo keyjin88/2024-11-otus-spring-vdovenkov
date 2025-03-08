@@ -8,7 +8,7 @@
     <version>1.0</version>
 
     <parent>
-        <groupId>ru.otus</groupId>
+        <groupId>ru.vavtech</groupId>
         <artifactId>2024-11-otus-spring-hw</artifactId>
         <version>1.0</version>
     </parent>

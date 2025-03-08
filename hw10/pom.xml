@@ -3,12 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>ru.otus</groupId>
+        <groupId>ru.vavtech</groupId>
         <artifactId>2024-11-otus-spring-hw</artifactId>
         <version>1.0</version>
     </parent>
 
-    <groupId>ru.vavtech</groupId>
     <artifactId>hw10-spring-spa</artifactId>
     <version>1.0</version>
     <name>hw10-spring-spa</name>
