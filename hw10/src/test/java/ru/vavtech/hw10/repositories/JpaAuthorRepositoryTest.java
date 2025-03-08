@@ -1,11 +1,10 @@
-package ru.vavtech.hw9.repositories;
+package ru.vavtech.hw10.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import ru.vavtech.hw10.models.Author;
-import ru.vavtech.hw10.repositories.AuthorRepository;
 
 import java.util.stream.IntStream;
 

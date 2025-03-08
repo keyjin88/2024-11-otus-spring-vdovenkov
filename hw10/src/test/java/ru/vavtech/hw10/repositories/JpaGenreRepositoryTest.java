@@ -1,4 +1,4 @@
-package ru.vavtech.hw9.repositories;
+package ru.vavtech.hw10.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

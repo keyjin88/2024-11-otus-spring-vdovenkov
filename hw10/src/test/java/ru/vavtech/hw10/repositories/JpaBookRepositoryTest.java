@@ -1,4 +1,4 @@
-package ru.vavtech.hw9.repositories;
+package ru.vavtech.hw10.repositories;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
