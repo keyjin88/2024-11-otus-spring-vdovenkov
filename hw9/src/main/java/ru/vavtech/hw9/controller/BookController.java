@@ -1,55 +1,64 @@
 package ru.vavtech.hw9.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import ru.vavtech.hw9.controller.request.BookCreateRequest;
-import ru.vavtech.hw9.controller.request.BookUpdateRequest;
-import ru.vavtech.hw9.models.dto.BookDto;
+import ru.vavtech.hw9.models.dto.BookEditDto;
+import ru.vavtech.hw9.services.AuthorService;
 import ru.vavtech.hw9.services.BookService;
+import ru.vavtech.hw9.services.GenreService;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/books")
+@Controller
 @RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
+    private final AuthorService authorService;
+    private final GenreService genreService;
 
-    @GetMapping
-    public List<BookDto> findAll() {
-        return bookService.findAll();
+    @GetMapping("/")
+    public String listBooksPage(Model model) {
+        model.addAttribute("books", bookService.findAll());
+        return "books-list";
     }
 
-    @GetMapping("/{id}")
-    public BookDto findById(@PathVariable Long id) {
-        return bookService.findById(id);
+    @GetMapping("/add")
+    public String addBookPage(Model model) {
+        model.addAttribute("book", new BookEditDto());
+        model.addAttribute("authors", authorService.findAll());
+        model.addAttribute("genres", genreService.findAll());
+        return "add-book";
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public BookDto create(@Valid @RequestBody BookCreateRequest request) {
-        return bookService.create(request.getTitle(), request.getAuthorId(), request.getGenreId());
+    @PostMapping("/add")
+    public String addBook(@ModelAttribute("book") BookEditDto book) {
+        bookService.create(book.getTitle(), book.getAuthorId(), book.getGenreId());
+        return "redirect:/";
     }
 
-    @PutMapping("/{id}")
-    public BookDto update(@PathVariable Long id, @Valid @RequestBody BookUpdateRequest request) {
-        return bookService.update(id, request.getTitle(), request.getAuthorId(), request.getGenreId());
+    @GetMapping("/edit/{id}")
+    public String editBookPage(@PathVariable("id") long id, Model model) {
+        var bookDto = bookService.findById(id);
+        model.addAttribute("book", BookEditDto.fromBookDto(bookDto));
+        model.addAttribute("authors", authorService.findAll());
+        model.addAttribute("genres", genreService.findAll());
+        return "edit-book";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    @PostMapping("/delete/{id}")
+    public String deleteBook(@PathVariable("id") long id) {
         bookService.deleteById(id);
+        return "redirect:/";
     }
-}
+
+    @PostMapping("/update/{id}")
+    public String updateBook(@PathVariable("id") long id,
+                           @ModelAttribute("book") BookEditDto book) {
+        bookService.update(id, book.getTitle(), book.getAuthorId(), book.getGenreId());
+        return "redirect:/";
+    }
+} 
