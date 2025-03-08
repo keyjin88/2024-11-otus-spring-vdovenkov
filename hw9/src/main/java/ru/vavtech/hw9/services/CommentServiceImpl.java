@@ -3,7 +3,7 @@ package ru.vavtech.hw9.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vavtech.hw9.converters.CommentMapper;
+import ru.vavtech.hw9.mapper.CommentMapper;
 import ru.vavtech.hw9.models.Comment;
 import ru.vavtech.hw9.models.dto.CommentDto;
 import ru.vavtech.hw9.repositories.BookRepository;

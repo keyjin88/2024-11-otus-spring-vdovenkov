@@ -1,4 +1,4 @@
-package ru.vavtech.hw9.converters;
+package ru.vavtech.hw9.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.vavtech.hw9.models.Genre;

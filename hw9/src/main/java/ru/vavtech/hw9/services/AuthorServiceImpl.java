@@ -3,7 +3,7 @@ package ru.vavtech.hw9.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vavtech.hw9.converters.AuthorMapper;
+import ru.vavtech.hw9.mapper.AuthorMapper;
 import ru.vavtech.hw9.models.dto.AuthorDto;
 import ru.vavtech.hw9.repositories.AuthorRepository;
 

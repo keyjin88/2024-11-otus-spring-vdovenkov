@@ -3,7 +3,7 @@ package ru.vavtech.hw9.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vavtech.hw9.converters.BookMapper;
+import ru.vavtech.hw9.mapper.BookMapper;
 import ru.vavtech.hw9.exceptions.EntityNotFoundException;
 import ru.vavtech.hw9.models.Author;
 import ru.vavtech.hw9.models.Book;
