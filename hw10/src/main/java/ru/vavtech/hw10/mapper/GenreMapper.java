@@ -1,8 +1,8 @@
 package ru.vavtech.hw10.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.vavtech.hw10.models.Genre;
-import ru.vavtech.hw10.models.dto.GenreDto;
+import ru.vavtech.hw10.model.Genre;
+import ru.vavtech.hw10.model.dto.GenreDto;
 
 @Component
 public class GenreMapper {

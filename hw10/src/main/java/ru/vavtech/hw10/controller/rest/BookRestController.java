@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.vavtech.hw10.models.dto.BookDto;
-import ru.vavtech.hw10.models.dto.UpdateBookDto;
-import ru.vavtech.hw10.models.dto.CreateBookDto;
-import ru.vavtech.hw10.services.BookService;
+import ru.vavtech.hw10.model.dto.BookDto;
+import ru.vavtech.hw10.model.dto.CreateBookDto;
+import ru.vavtech.hw10.model.dto.UpdateBookDto;
+import ru.vavtech.hw10.service.BookService;
 
 import java.util.List;
 

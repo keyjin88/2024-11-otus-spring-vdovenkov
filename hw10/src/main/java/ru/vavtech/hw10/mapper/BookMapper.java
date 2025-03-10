@@ -2,8 +2,8 @@ package ru.vavtech.hw10.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.vavtech.hw10.models.Book;
-import ru.vavtech.hw10.models.dto.BookDto;
+import ru.vavtech.hw10.model.Book;
+import ru.vavtech.hw10.model.dto.BookDto;
 
 @RequiredArgsConstructor
 @Component

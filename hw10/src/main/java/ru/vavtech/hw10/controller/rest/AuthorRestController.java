@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.vavtech.hw10.models.dto.AuthorDto;
-import ru.vavtech.hw10.services.AuthorService;
+import ru.vavtech.hw10.model.dto.AuthorDto;
+import ru.vavtech.hw10.service.AuthorService;
 
 import java.util.List;
 

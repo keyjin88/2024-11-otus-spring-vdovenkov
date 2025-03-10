@@ -8,19 +8,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.vavtech.hw10.models.dto.AuthorDto;
-import ru.vavtech.hw10.models.dto.BookDto;
-import ru.vavtech.hw10.models.dto.GenreDto;
-import ru.vavtech.hw10.models.dto.UpdateBookDto;
-import ru.vavtech.hw10.services.BookService;
+import ru.vavtech.hw10.model.dto.AuthorDto;
+import ru.vavtech.hw10.model.dto.BookDto;
+import ru.vavtech.hw10.model.dto.GenreDto;
+import ru.vavtech.hw10.model.dto.UpdateBookDto;
+import ru.vavtech.hw10.service.BookService;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
