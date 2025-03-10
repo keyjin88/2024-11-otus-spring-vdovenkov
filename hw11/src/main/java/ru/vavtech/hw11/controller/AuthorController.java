@@ -28,8 +28,9 @@ public class AuthorController {
     }
 
     @PostMapping
-    public Mono<Author> createAuthor(@RequestBody Author author) {
-        return authorRepository.save(author);
+    public Mono<ResponseEntity<Author>> createAuthor(@RequestBody Author author) {
+        return authorRepository.save(author)
+                .map(savedAuthor -> ResponseEntity.status(201).body(savedAuthor));
     }
 
     @PutMapping("/{id}")

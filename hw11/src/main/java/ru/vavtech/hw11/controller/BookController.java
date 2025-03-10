@@ -28,8 +28,9 @@ public class BookController {
     }
 
     @PostMapping
-    public Mono<Book> createBook(@RequestBody Book book) {
-        return bookRepository.save(book);
+    public Mono<ResponseEntity<Book>> createBook(@RequestBody Book book) {
+        return bookRepository.save(book)
+                .map(savedBook -> ResponseEntity.status(201).body(savedBook));
     }
 
     @PutMapping("/{id}")

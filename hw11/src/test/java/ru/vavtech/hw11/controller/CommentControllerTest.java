@@ -79,7 +79,7 @@ class CommentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(comment)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isCreated()
                 .expectBody(Comment.class)
                 .isEqualTo(comment);
     }

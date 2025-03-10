@@ -28,8 +28,9 @@ public class GenreController {
     }
 
     @PostMapping
-    public Mono<Genre> createGenre(@RequestBody Genre genre) {
-        return genreRepository.save(genre);
+    public Mono<ResponseEntity<Genre>> createGenre(@RequestBody Genre genre) {
+        return genreRepository.save(genre)
+                .map(savedGenre -> ResponseEntity.status(201).body(savedGenre));
     }
 
     @PutMapping("/{id}")

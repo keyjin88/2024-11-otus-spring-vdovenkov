@@ -28,8 +28,9 @@ public class CommentController {
     }
 
     @PostMapping
-    public Mono<Comment> createComment(@RequestBody Comment comment) {
-        return commentRepository.save(comment);
+    public Mono<ResponseEntity<Comment>> createComment(@RequestBody Comment comment) {
+        return commentRepository.save(comment)
+                .map(savedComment -> ResponseEntity.status(201).body(savedComment));
     }
 
     @PutMapping("/{id}")

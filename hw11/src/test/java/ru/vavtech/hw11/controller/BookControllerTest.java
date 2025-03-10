@@ -77,7 +77,7 @@ class BookControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(book)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isCreated()
                 .expectBody(Book.class)
                 .isEqualTo(book);
     }

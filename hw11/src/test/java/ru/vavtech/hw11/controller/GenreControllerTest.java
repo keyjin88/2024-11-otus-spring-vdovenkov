@@ -70,7 +70,7 @@ class GenreControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(genre)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isCreated()
                 .expectBody(Genre.class)
                 .isEqualTo(genre);
     }

@@ -70,7 +70,7 @@ class AuthorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(author)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isCreated()
                 .expectBody(Author.class)
                 .isEqualTo(author);
     }
