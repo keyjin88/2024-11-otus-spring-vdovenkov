@@ -32,8 +32,8 @@ public class BookRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookDto> getBook(@PathVariable("id") long id) {
-        return ResponseEntity.ok(bookService.findById(id));
+    public BookDto getBook(@PathVariable("id") long id) {
+        return bookService.findById(id);
     }
 
     @PostMapping
