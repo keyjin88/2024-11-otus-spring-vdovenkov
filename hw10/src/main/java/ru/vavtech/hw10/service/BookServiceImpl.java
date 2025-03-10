@@ -9,6 +9,8 @@ import ru.vavtech.hw10.model.Author;
 import ru.vavtech.hw10.model.Book;
 import ru.vavtech.hw10.model.Genre;
 import ru.vavtech.hw10.model.dto.BookDto;
+import ru.vavtech.hw10.model.dto.CreateBookDto;
+import ru.vavtech.hw10.model.dto.UpdateBookDto;
 import ru.vavtech.hw10.repository.AuthorRepository;
 import ru.vavtech.hw10.repository.BookRepository;
 import ru.vavtech.hw10.repository.GenreRepository;
@@ -44,22 +46,22 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookDto create(String title, long authorId, long genreId) {
+    public BookDto create(CreateBookDto createBookDto) {
         var book = new Book();
-        book.setTitle(title);
-        book.setAuthor(authorById(authorId));
-        book.setGenre(genreById(genreId));
+        book.setTitle(createBookDto.getTitle());
+        book.setAuthor(authorById(createBookDto.getAuthorId()));
+        book.setGenre(genreById(createBookDto.getGenreId()));
         return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
     @Transactional
-    public BookDto update(long id, String title, long authorId, long genreId) {
-        var book = bookRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Book with id %d not found".formatted(id)));
-        book.setTitle(title);
-        book.setAuthor(authorById(authorId));
-        book.setGenre(genreById(genreId));
+    public BookDto update(UpdateBookDto updateBookDto) {
+        var book = bookRepository.findById(updateBookDto.getId())
+                .orElseThrow(() -> new NotFoundException("Book with id %d not found".formatted(updateBookDto.getId())));
+        book.setTitle(updateBookDto.getTitle());
+        book.setAuthor(authorById(updateBookDto.getAuthorId()));
+        book.setGenre(genreById(updateBookDto.getGenreId()));
         return bookMapper.toDto(bookRepository.save(book));
     }
 

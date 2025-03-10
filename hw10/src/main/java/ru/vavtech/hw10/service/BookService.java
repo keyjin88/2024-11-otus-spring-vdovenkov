@@ -1,6 +1,8 @@
 package ru.vavtech.hw10.service;
 
 import ru.vavtech.hw10.model.dto.BookDto;
+import ru.vavtech.hw10.model.dto.CreateBookDto;
+import ru.vavtech.hw10.model.dto.UpdateBookDto;
 
 import java.util.List;
 
@@ -9,9 +11,9 @@ public interface BookService {
 
     List<BookDto> findAll();
 
-    BookDto create(String title, long authorId, long genreId);
+    BookDto create(CreateBookDto createBookDto);
 
-    BookDto update(long id, String title, long authorId, long genreId);
+    BookDto update(UpdateBookDto updateBookDto);
 
     void deleteById(long id);
 }

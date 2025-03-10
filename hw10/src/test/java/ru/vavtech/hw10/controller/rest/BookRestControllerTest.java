@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.vavtech.hw10.model.dto.AuthorDto;
 import ru.vavtech.hw10.model.dto.BookDto;
+import ru.vavtech.hw10.model.dto.CreateBookDto;
 import ru.vavtech.hw10.model.dto.GenreDto;
 import ru.vavtech.hw10.model.dto.UpdateBookDto;
 import ru.vavtech.hw10.service.BookService;
@@ -74,14 +75,15 @@ class BookRestControllerTest {
     @Test
     @DisplayName("correctly create book")
     void shouldCorrectlyCreateBook() throws Exception {
-        var bookToCreate = new UpdateBookDto(null, "New Book", 1L, 1L);
+        var bookToCreate = new CreateBookDto();
+        bookToCreate.setTitle("New Book");
+        bookToCreate.setAuthorId(1L);
+        bookToCreate.setGenreId(1L);
         var author = new AuthorDto(1L, "Author 1");
         var genre = new GenreDto(1L, "Genre 1");
         var createdBook = new BookDto(1L, "New Book", author, genre);
-        
-        given(bookService.create(eq(bookToCreate.getTitle()), 
-                               eq(bookToCreate.getAuthorId()), 
-                               eq(bookToCreate.getGenreId())))
+
+        given(bookService.create(eq(bookToCreate)))
             .willReturn(createdBook);
 
         mvc.perform(post("/api/books")
@@ -98,11 +100,8 @@ class BookRestControllerTest {
         var author = new AuthorDto(1L, "Author 1");
         var genre = new GenreDto(1L, "Genre 1");
         var updatedBook = new BookDto(1L, "Updated Book", author, genre);
-        
-        given(bookService.update(eq(1L),
-                               eq(bookToUpdate.getTitle()), 
-                               eq(bookToUpdate.getAuthorId()), 
-                               eq(bookToUpdate.getGenreId())))
+
+        given(bookService.update(eq(bookToUpdate)))
             .willReturn(updatedBook);
 
         mvc.perform(put("/api/books/1")
@@ -124,7 +123,10 @@ class BookRestControllerTest {
     @Test
     @DisplayName("return 400 when creating book with invalid data")
     void shouldReturn400WhenCreatingBookWithInvalidData() throws Exception {
-        var invalidBook = new UpdateBookDto(null, "", null, null);
+        var invalidBook = new CreateBookDto();
+        invalidBook.setTitle("");
+        invalidBook.setAuthorId(null);
+        invalidBook.setGenreId(null);
 
         mvc.perform(post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)

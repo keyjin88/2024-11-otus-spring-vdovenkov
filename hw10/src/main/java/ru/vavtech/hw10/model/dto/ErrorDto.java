@@ -10,6 +10,8 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorDto {
+
     private String message;
+
     private Map<String, String> errors;
 } 

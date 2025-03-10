@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateBookDto {
+    @NotNull(message = "ID is required")
     private Long id;
 
     @NotBlank(message = "Title is required")
@@ -22,13 +23,4 @@ public class UpdateBookDto {
 
     @NotNull(message = "Genre is required")
     private Long genreId;
-
-    public static UpdateBookDto fromBookDto(BookDto bookDto) {
-        return new UpdateBookDto(
-                bookDto.getId(),
-                bookDto.getTitle(),
-                bookDto.getAuthor().getId(),
-                bookDto.getGenre().getId()
-        );
-    }
 } 

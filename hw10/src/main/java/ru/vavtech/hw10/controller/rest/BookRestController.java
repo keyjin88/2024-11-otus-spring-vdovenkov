@@ -41,7 +41,7 @@ public class BookRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BookDto> createBook(@Valid @RequestBody CreateBookDto bookDto) {
         return ResponseEntity.ok(
-            bookService.create(bookDto.getTitle(), bookDto.getAuthorId(), bookDto.getGenreId())
+                bookService.create(bookDto)
         );
     }
 
@@ -50,7 +50,7 @@ public class BookRestController {
             @PathVariable("id") long id,
             @Valid @RequestBody UpdateBookDto bookDto) {
         return ResponseEntity.ok(
-            bookService.update(id, bookDto.getTitle(), bookDto.getAuthorId(), bookDto.getGenreId())
+                bookService.update(bookDto)
         );
     }
 
