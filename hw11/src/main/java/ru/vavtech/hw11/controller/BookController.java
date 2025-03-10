@@ -2,6 +2,7 @@ package ru.vavtech.hw11.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,8 +21,10 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Book> getBookById(@PathVariable String id) {
-        return bookRepository.findById(id);
+    public Mono<ResponseEntity<Book>> getBookById(@PathVariable String id) {
+        return bookRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -30,17 +33,21 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public Mono<Book> updateBook(@PathVariable String id, @RequestBody Book book) {
+    public Mono<ResponseEntity<Book>> updateBook(@PathVariable String id, @RequestBody Book book) {
         return bookRepository.findById(id)
                 .flatMap(existingBook -> {
                     book.setId(id);
-                    return bookRepository.save(book);
-                });
+                    return bookRepository.save(book)
+                            .map(ResponseEntity::ok);
+                })
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public Mono<Void> deleteBook(@PathVariable String id) {
+    public Mono<ResponseEntity<Void>> deleteBook(@PathVariable String id) {
         return bookRepository.findById(id)
-                .flatMap(book -> bookRepository.deleteById(id));
+                .flatMap(book -> bookRepository.deleteById(id)
+                        .then(Mono.just(ResponseEntity.noContent().<Void>build())))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 } 

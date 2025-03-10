@@ -15,6 +15,7 @@ import ru.vavtech.hw11.model.Genre;
 import ru.vavtech.hw11.repository.BookRepository;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -42,12 +43,12 @@ class BookControllerTest {
 
     @Test
     void getAllBooks_ShouldReturnListOfBooks() {
-        List<Book> books = Arrays.asList(book);
+        List<Book> books = Collections.singletonList(book);
         when(bookRepository.findAll()).thenReturn(Flux.fromIterable(books));
 
         webTestClient.get()
                 .uri("/api/books")
-                .accept(MediaType.APPLICATION_NDJSON_VALUE)
+                .accept(MediaType.APPLICATION_NDJSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(Book.class)
