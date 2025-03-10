@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.vavtech.hw10.models.dto.BookDto;
 import ru.vavtech.hw10.models.dto.UpdateBookDto;
+import ru.vavtech.hw10.models.dto.CreateBookDto;
 import ru.vavtech.hw10.services.BookService;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class BookRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<BookDto> createBook(@Valid @RequestBody UpdateBookDto bookDto) {
+    public ResponseEntity<BookDto> createBook(@Valid @RequestBody CreateBookDto bookDto) {
         return ResponseEntity.ok(
             bookService.create(bookDto.getTitle(), bookDto.getAuthorId(), bookDto.getGenreId())
         );
@@ -54,6 +55,7 @@ public class BookRestController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteBook(@PathVariable("id") long id) {
         bookService.deleteById(id);
         return ResponseEntity.ok().build();
