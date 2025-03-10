@@ -2,6 +2,7 @@ package ru.vavtech.hw11.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,8 +21,10 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Author> getAuthorById(@PathVariable String id) {
-        return authorRepository.findById(id);
+    public Mono<ResponseEntity<Author>> getAuthorById(@PathVariable String id) {
+        return authorRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -30,17 +33,21 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public Mono<Author> updateAuthor(@PathVariable String id, @RequestBody Author author) {
+    public Mono<ResponseEntity<Author>> updateAuthor(@PathVariable String id, @RequestBody Author author) {
         return authorRepository.findById(id)
                 .flatMap(existingAuthor -> {
                     author.setId(id);
-                    return authorRepository.save(author);
-                });
+                    return authorRepository.save(author)
+                            .map(ResponseEntity::ok);
+                })
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public Mono<Void> deleteAuthor(@PathVariable String id) {
+    public Mono<ResponseEntity<Void>> deleteAuthor(@PathVariable String id) {
         return authorRepository.findById(id)
-                .flatMap(author -> authorRepository.deleteById(id));
+                .flatMap(author -> authorRepository.deleteById(id)
+                        .then(Mono.just(ResponseEntity.noContent().<Void>build())))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 } 
