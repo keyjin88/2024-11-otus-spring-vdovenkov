@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CsvQuestionDao implements QuestionDao {
     private final TestFileNameProvider fileNameProvider;
+
     private final AppProperties properties;
 
     @Override
