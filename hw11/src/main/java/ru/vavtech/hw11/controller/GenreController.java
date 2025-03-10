@@ -2,6 +2,7 @@ package ru.vavtech.hw11.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,8 +21,10 @@ public class GenreController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Genre> getGenreById(@PathVariable String id) {
-        return genreRepository.findById(id);
+    public Mono<ResponseEntity<Genre>> getGenreById(@PathVariable String id) {
+        return genreRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -30,17 +33,21 @@ public class GenreController {
     }
 
     @PutMapping("/{id}")
-    public Mono<Genre> updateGenre(@PathVariable String id, @RequestBody Genre genre) {
+    public Mono<ResponseEntity<Genre>> updateGenre(@PathVariable String id, @RequestBody Genre genre) {
         return genreRepository.findById(id)
                 .flatMap(existingGenre -> {
                     genre.setId(id);
-                    return genreRepository.save(genre);
-                });
+                    return genreRepository.save(genre)
+                            .map(ResponseEntity::ok);
+                })
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public Mono<Void> deleteGenre(@PathVariable String id) {
+    public Mono<ResponseEntity<Void>> deleteGenre(@PathVariable String id) {
         return genreRepository.findById(id)
-                .flatMap(genre -> genreRepository.deleteById(id));
+                .flatMap(genre -> genreRepository.deleteById(id)
+                        .then(Mono.just(ResponseEntity.noContent().<Void>build())))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 } 

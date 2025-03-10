@@ -2,6 +2,7 @@ package ru.vavtech.hw11.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,8 +21,10 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Comment> getCommentById(@PathVariable String id) {
-        return commentRepository.findById(id);
+    public Mono<ResponseEntity<Comment>> getCommentById(@PathVariable String id) {
+        return commentRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -30,17 +33,21 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public Mono<Comment> updateComment(@PathVariable String id, @RequestBody Comment comment) {
+    public Mono<ResponseEntity<Comment>> updateComment(@PathVariable String id, @RequestBody Comment comment) {
         return commentRepository.findById(id)
                 .flatMap(existingComment -> {
                     comment.setId(id);
-                    return commentRepository.save(comment);
-                });
+                    return commentRepository.save(comment)
+                            .map(ResponseEntity::ok);
+                })
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public Mono<Void> deleteComment(@PathVariable String id) {
+    public Mono<ResponseEntity<Void>> deleteComment(@PathVariable String id) {
         return commentRepository.findById(id)
-                .flatMap(comment -> commentRepository.deleteById(id));
+                .flatMap(comment -> commentRepository.deleteById(id)
+                        .then(Mono.just(ResponseEntity.noContent().<Void>build())))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 } 
