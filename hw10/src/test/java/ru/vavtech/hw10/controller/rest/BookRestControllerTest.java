@@ -5,8 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.vavtech.hw10.model.dto.AuthorDto;
 import ru.vavtech.hw10.model.dto.BookDto;
@@ -37,7 +37,7 @@ class BookRestControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
-    @MockBean
+    @MockitoBean
     private BookService bookService;
 
     @Test
@@ -89,7 +89,7 @@ class BookRestControllerTest {
         mvc.perform(post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(bookToCreate)))
-            .andExpect(status().isOk())
+            .andExpect(status().isCreated())
             .andExpect(content().json(mapper.writeValueAsString(createdBook)));
     }
 
@@ -117,7 +117,7 @@ class BookRestControllerTest {
         doNothing().when(bookService).deleteById(1L);
 
         mvc.perform(delete("/api/books/1"))
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
     }
 
     @Test
