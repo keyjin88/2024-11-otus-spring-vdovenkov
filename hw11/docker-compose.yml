@@ -6,12 +6,12 @@ services:
     container_name: mongodb
     restart: always
     ports:
-      - "27017:27017"  # Публикуем порт 27017, чтобы иметь доступ к базе данных
+      - "27017:27017"
     volumes:
-      - mongodb_data:/data/db  # Используем volume для сохранения данных между перезапусками контейнера
+      - mongodb_data:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin  # Устанавливаем имя пользователя для администратора
-      - MONGO_INITDB_ROOT_PASSWORD=example  # Устанавливаем пароль для администратора
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
 
 volumes:
-  mongodb_data:  # Определяем volume для хранения данных
+  mongodb_data:
