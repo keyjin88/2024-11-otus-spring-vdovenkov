@@ -133,4 +133,22 @@ class BookRestControllerTest {
                 .content(mapper.writeValueAsString(invalidBook)))
             .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @DisplayName("return 404 when book not found by id")
+    void shouldReturn404WhenBookNotFound() throws Exception {
+        given(bookService.findById(999L)).willReturn(null);
+
+        mvc.perform(get("/api/books/999"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("return 500 when internal server error occurs")
+    void shouldReturn500WhenInternalServerError() throws Exception {
+        given(bookService.findById(1L)).willThrow(new RuntimeException("Internal Server Error"));
+
+        mvc.perform(get("/api/books/1"))
+            .andExpect(status().isInternalServerError());
+    }
 } 
