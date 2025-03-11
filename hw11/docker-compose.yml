@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"  # Публикуем порт 27017, чтобы иметь доступ к базе данных
+    volumes:
+      - mongodb_data:/data/db  # Используем volume для сохранения данных между перезапусками контейнера
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin  # Устанавливаем имя пользователя для администратора
+      - MONGO_INITDB_ROOT_PASSWORD=example  # Устанавливаем пароль для администратора
+
+volumes:
+  mongodb_data:  # Определяем volume для хранения данных
