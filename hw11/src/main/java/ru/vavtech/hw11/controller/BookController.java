@@ -18,6 +18,7 @@ import ru.vavtech.hw11.model.Author;
 import ru.vavtech.hw11.model.Book;
 import ru.vavtech.hw11.model.Genre;
 import ru.vavtech.hw11.model.dto.CreateBookDTO;
+import ru.vavtech.hw11.model.dto.UpdateBookDTO;
 import ru.vavtech.hw11.repository.AuthorRepository;
 import ru.vavtech.hw11.repository.BookRepository;
 import ru.vavtech.hw11.repository.GenreRepository;
@@ -69,14 +70,22 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public Mono<ResponseEntity<Book>> updateBook(@PathVariable String id, @RequestBody Book book) {
-        return bookRepository.findById(id)
-                .flatMap(existingBook -> {
-                    book.setId(id);
-                    return bookRepository.save(book)
-                            .map(ResponseEntity::ok);
-                })
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+    public Mono<ResponseEntity<Book>> updateBook(@PathVariable String id, @RequestBody UpdateBookDTO updateBookDTO) {
+        return Mono.zip(
+                authorRepository.findById(updateBookDTO.getAuthorId()),
+                genreRepository.findById(updateBookDTO.getGenreId())
+        ).flatMap(tuple -> {
+            Author author = tuple.getT1();
+            Genre genre = tuple.getT2();
+            return bookRepository.findById(id)
+                    .flatMap(existingBook -> {
+                        existingBook.setTitle(updateBookDTO.getTitle());
+                        existingBook.setAuthor(author);
+                        existingBook.setGenre(genre);
+                        return bookRepository.save(existingBook);
+                    })
+                    .map(ResponseEntity::ok);
+        }).defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

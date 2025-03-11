@@ -33,6 +33,7 @@ const EditBookForm = ({ book, authors, genres, open, onClose, onSave }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('Submitting form with data:', formData);
         try {
             const updatedBook = await api.updateBook(book.id, formData);
             onSave(updatedBook);
@@ -75,7 +76,7 @@ const EditBookForm = ({ book, authors, genres, open, onClose, onSave }) => {
                         >
                             {authors.map(author => (
                                 <MenuItem key={author.id} value={author.id}>
-                                    {author.fullName}
+                                    {author.name}
                                 </MenuItem>
                             ))}
                         </Select>
