@@ -1,3 +1,32 @@
+const handleStreamResponse = async (response) => {
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error || 'Произошла ошибка при выполнении запроса');
+    }
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    const items = [];
+
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n').filter(line => line.trim());
+        
+        for (const line of lines) {
+            try {
+                const item = JSON.parse(line);
+                items.push(item);
+            } catch (e) {
+                console.warn('Failed to parse JSON line:', line);
+            }
+        }
+    }
+    
+    return items;
+};
+
 const handleResponse = async (response) => {
     if (!response.ok) {
         const error = await response.text();
@@ -12,16 +41,28 @@ const handleResponse = async (response) => {
 
 export const fetchBooks = async () => {
     const response = await fetch('/api/books');
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/x-ndjson')) {
+        return handleStreamResponse(response);
+    }
     return handleResponse(response);
 };
 
 export const fetchAuthors = async () => {
     const response = await fetch('/api/authors');
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/x-ndjson')) {
+        return handleStreamResponse(response);
+    }
     return handleResponse(response);
 };
 
 export const fetchGenres = async () => {
     const response = await fetch('/api/genres');
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/x-ndjson')) {
+        return handleStreamResponse(response);
+    }
     return handleResponse(response);
 };
 
