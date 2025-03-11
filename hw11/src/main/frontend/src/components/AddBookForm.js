@@ -31,6 +31,8 @@ const AddBookForm = ({ onBookAdded }) => {
                 api.fetchAuthors(),
                 api.fetchGenres()
             ]);
+            console.log('Loaded authors:', authorsData);
+            console.log('Loaded genres:', genresData);
             setAuthors(authorsData);
             setGenres(genresData);
         } catch (err) {
@@ -40,6 +42,7 @@ const AddBookForm = ({ onBookAdded }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        console.log(`Changing ${name} to ${value}`);
         setFormData(prev => ({
             ...prev,
             [name]: value
@@ -55,6 +58,7 @@ const AddBookForm = ({ onBookAdded }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('Submitting form with data:', formData);
         try {
             const newBook = await api.createBook(formData);
             onBookAdded(newBook);
@@ -101,7 +105,7 @@ const AddBookForm = ({ onBookAdded }) => {
                 >
                     {authors.map(author => (
                         <MenuItem key={author.id} value={author.id}>
-                            {author.fullName}
+                            {author ? author.name : 'Неизвестный автор'}
                         </MenuItem>
                     ))}
                 </Select>
@@ -117,7 +121,7 @@ const AddBookForm = ({ onBookAdded }) => {
                 >
                     {genres.map(genre => (
                         <MenuItem key={genre.id} value={genre.id}>
-                            {genre.name}
+                            {genre ? genre.name : 'Неизвестный жанр'}
                         </MenuItem>
                     ))}
                 </Select>

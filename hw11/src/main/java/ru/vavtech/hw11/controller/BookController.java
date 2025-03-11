@@ -1,6 +1,7 @@
 package ru.vavtech.hw11.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,14 +14,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import ru.vavtech.hw11.model.Author;
 import ru.vavtech.hw11.model.Book;
+import ru.vavtech.hw11.model.Genre;
+import ru.vavtech.hw11.model.dto.CreateBookDTO;
+import ru.vavtech.hw11.repository.AuthorRepository;
 import ru.vavtech.hw11.repository.BookRepository;
+import ru.vavtech.hw11.repository.GenreRepository;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
 public class BookController {
+
     private final BookRepository bookRepository;
+
+    private final AuthorRepository authorRepository;
+
+    private final GenreRepository genreRepository;
 
     @GetMapping(produces = MediaType.APPLICATION_NDJSON_VALUE)
     public Flux<Book> getAllBooks() {
@@ -35,9 +47,25 @@ public class BookController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<Book>> createBook(@RequestBody Book book) {
-        return bookRepository.save(book)
-                .map(savedBook -> ResponseEntity.status(201).body(savedBook));
+    public Mono<ResponseEntity<Book>> createBook(@RequestBody CreateBookDTO createBookDTO) {
+        log.info("Received book data: title={}, authorId={}, genreId={}",
+                createBookDTO.getTitle(), createBookDTO.getAuthorId(), createBookDTO.getGenreId());
+
+        return Mono.zip(
+                authorRepository.findById(createBookDTO.getAuthorId()),
+                genreRepository.findById(createBookDTO.getGenreId())
+        ).flatMap(tuple -> {
+            Author author = tuple.getT1();
+            Genre genre = tuple.getT2();
+            Book book = new Book();
+            book.setTitle(createBookDTO.getTitle());
+            book.setAuthor(author);
+            book.setGenre(genre);
+            return bookRepository.save(book);
+        }).map(savedBook -> {
+            log.info("Saved book: {}", savedBook);
+            return ResponseEntity.status(201).body(savedBook);
+        }).defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
     @PutMapping("/{id}")

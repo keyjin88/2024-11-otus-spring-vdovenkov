@@ -12,11 +12,13 @@ const handleStreamResponse = async (response) => {
         if (done) break;
         
         const chunk = decoder.decode(value, { stream: true });
+        console.log('Chunk received:', chunk);
         const lines = chunk.split('\n').filter(line => line.trim());
         
         for (const line of lines) {
             try {
                 const item = JSON.parse(line);
+                console.log('Parsed item:', item);
                 items.push(item);
             } catch (e) {
                 console.warn('Failed to parse JSON line:', line);
@@ -24,6 +26,7 @@ const handleStreamResponse = async (response) => {
         }
     }
     
+    console.log('Final items:', items);
     return items;
 };
 

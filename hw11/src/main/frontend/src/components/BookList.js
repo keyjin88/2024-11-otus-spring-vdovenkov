@@ -143,7 +143,7 @@ const BookList = () => {
                         {books.map(book => (
                             <TableRow key={book.id} hover>
                                 <TableCell>{book.title}</TableCell>
-                                <TableCell>{book.author.fullName}</TableCell>
+                                <TableCell>{book.author.name}</TableCell>
                                 <TableCell>{book.genre.name}</TableCell>
                                 <TableCell align="center">
                                     <IconButton 
