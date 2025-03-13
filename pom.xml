@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.otus</groupId>
+    <groupId>ru.vavtech</groupId>
     <artifactId>2024-11-otus-spring-hw</artifactId>
     <version>1.0</version>
 
@@ -43,6 +43,7 @@
         <module>hw7</module>
         <module>hw8</module>
         <module>hw9</module>
+        <module>hw10</module>
     </modules>
 
     <dependencyManagement>
